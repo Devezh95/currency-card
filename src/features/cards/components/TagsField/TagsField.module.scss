@@ -1,0 +1,31 @@
+@use '@/shared/styles/tokens' as *;
+@use '@/shared/styles/mixins' as *;
+
+.control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 45px;
+  padding: 10px 12px;
+  cursor: text;
+
+  @include field-surface;
+}
+
+.invalid {
+  @include field-invalid;
+}
+
+.input {
+  @include field-input-reset;
+
+  flex: 1 1 80px;
+  height: 25px;
+  padding-left: 4px;
+  font-size: 14px;
+}
+
+.inputWithTags {
+  padding-left: 0;
+}

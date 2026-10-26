@@ -1,0 +1,42 @@
+@use '@/shared/styles/tokens' as *;
+@use '@/shared/styles/mixins' as *;
+
+.page {
+  display: contents;
+}
+
+.withChart {
+  @include desktop {
+    display: grid;
+    grid-template-areas:
+      'header panel'
+      'table panel';
+    grid-template-rows: auto 1fr;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 16px 20px;
+    align-items: start;
+    min-height: calc(100dvh - 56px);
+    margin-inline: -8px;
+  }
+}
+
+.header {
+  grid-area: header;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  grid-area: panel;
+  align-self: stretch;
+  scroll-margin-top: 16px;
+}
+
+.panelFill {
+  flex: 1;
+}
+
+.table {
+  grid-area: table;
+  min-width: 0;
+}

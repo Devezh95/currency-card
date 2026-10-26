@@ -1,0 +1,232 @@
+@use '@/shared/styles/tokens' as *;
+@use '@/shared/styles/mixins' as *;
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  width: $sidebar-width;
+  overflow: hidden auto;
+  background-color: $color-surface;
+  box-shadow: $shadow-sidebar;
+  transition:
+    width $sidebar-transition,
+    box-shadow $sidebar-transition;
+}
+
+.sidebarExpanded {
+  width: $sidebar-width-expanded;
+  box-shadow: $shadow-sidebar-expanded;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 100ms ease-out,
+    visibility 0s linear 100ms;
+}
+
+.panelActive {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 160ms ease-out 60ms,
+    visibility 0s;
+}
+
+$item-gap: 8px;
+
+.collapsed {
+  width: $sidebar-width;
+  padding: 20px 10px;
+}
+
+.logo {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 44px;
+  margin-bottom: 24px;
+  color: $color-primary;
+  border-radius: $radius-input;
+
+  @include focus-ring;
+
+  &:hover {
+    background-color: $color-input;
+  }
+}
+
+.logoIcon {
+  flex-shrink: 0;
+}
+
+.expandIcon {
+  display: none;
+}
+
+.logo:hover,
+.logo:focus-visible {
+  .logoIcon {
+    display: none;
+  }
+
+  .expandIcon {
+    display: block;
+  }
+}
+
+.compactNav > ul {
+  display: flex;
+  flex-direction: column;
+  gap: $item-gap;
+}
+
+.compactItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 52px;
+  height: 58px;
+  padding-top: 10px;
+  font-size: 10px;
+  font-weight: $fw-medium;
+  color: $color-text-muted;
+  border-radius: $radius-input;
+
+  @include focus-ring;
+
+  &:hover {
+    background-color: $color-input;
+  }
+}
+
+.compactItemActive {
+  font-weight: $fw-semibold;
+  color: $color-accent;
+
+  &,
+  &:hover {
+    background-color: $color-accent-soft;
+  }
+}
+
+.compactLogout {
+  height: 54px;
+  margin-top: auto;
+}
+
+.expanded {
+  width: $sidebar-width-expanded;
+  padding: 24px 20px;
+}
+
+.header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+  height: 28px;
+  margin-bottom: 16px;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: $fw-bold;
+  color: $color-primary;
+}
+
+.collapse {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  color: $color-text-muted;
+  border-radius: $radius-chip;
+
+  @include focus-ring;
+
+  &:hover {
+    color: $color-primary;
+    background-color: $color-input;
+  }
+}
+
+.divider {
+  flex-shrink: 0;
+  margin: 4px 0 0;
+  border: none;
+  border-top: 1px solid $color-divider;
+}
+
+.menuLabel {
+  margin-top: 20px;
+  font-size: 11px;
+  font-weight: $fw-semibold;
+  line-height: 13px;
+  color: $color-text-muted;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $item-gap;
+  margin-top: 12px;
+}
+
+.item {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-weight: $fw-medium;
+  color: $color-primary;
+  text-align: left;
+  border-radius: $radius-input;
+
+  @include focus-ring;
+
+  &:hover {
+    background-color: $color-input;
+  }
+}
+
+.itemActive {
+  font-weight: $fw-semibold;
+  color: $color-accent;
+
+  &,
+  &:hover {
+    background-color: $color-accent-soft;
+  }
+}
+
+.bottomDivider {
+  margin-top: auto;
+  margin-bottom: 16px;
+}
+
+.logout {
+  color: $color-danger;
+}

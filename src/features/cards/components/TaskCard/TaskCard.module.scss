@@ -1,0 +1,159 @@
+
+@use '@/shared/styles/tokens' as *;
+@use '@/shared/styles/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 28px 32px;
+  background-color: $color-surface;
+  border-radius: $radius-card;
+  box-shadow: $shadow-kanban;
+
+  > * {
+    max-width: 100%;
+  }
+
+  @include tablet {
+    padding: 24px;
+  }
+
+  @include mobile {
+    padding: 20px;
+  }
+}
+
+.badges,
+.tags,
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.title {
+  color: $color-primary;
+  font-size: 22px;
+  font-weight: $fw-bold;
+  overflow-wrap: anywhere;
+
+  @include mobile {
+    font-size: 18px;
+  }
+}
+
+.description {
+  color: $color-text-muted;
+  font-size: 15px;
+  line-height: 22px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: stretch;
+  gap: 12px 40px;
+  padding-top: 18px;
+  border-top: 1px solid $color-border;
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  color: $color-text-muted;
+  font-size: 11px;
+  font-weight: $fw-semibold;
+  text-transform: uppercase;
+}
+
+.metaValue {
+  color: $color-primary;
+  font-size: 15px;
+  font-weight: $fw-semibold;
+}
+
+.images {
+  gap: 10px;
+}
+
+.image {
+  display: block;
+  width: 90px;
+  height: 60px;
+  border-radius: $radius-chip-lg;
+  object-fit: cover;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+
+  @include mobile {
+    align-self: stretch;
+
+    > * {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+.backButton {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 162px;
+  min-height: 43px;
+  padding: 13px 28px;
+  border: 1.5px solid #e6e7ed;
+  border-radius: 14px;
+  background: transparent;
+  color: #8e93a1;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+
+  &:hover {
+    border-color: #d5d7e0;
+    background-color: #f8f8fa;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 3px;
+  }
+
+  &:active {
+    background-color: #f0f1f5;
+  }
+
+  @include mobile {
+    width: 100%;
+    padding-inline: 12px;
+  }
+}

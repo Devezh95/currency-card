@@ -1,0 +1,200 @@
+import { useId, useMemo, useState, type ReactNode } from 'react'
+import { Controller, useController, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { isoDateAgo } from '@/shared/lib/format'
+import { Button, DateField, Select, TextArea, TextField } from '@/shared/ui'
+import {
+  ASSIGNEE_NAMES,
+  ASSIGNEE_VALUES,
+  PRIORITY_LABELS,
+  PRIORITY_VALUES,
+  STATUS_LABELS,
+  STATUS_VALUES,
+  toOptions,
+} from '../../model/constants'
+import { createCardFormSchema, type CardFormOutput, type CardFormValues } from '../../model/schema'
+import { ImageDropzone } from '../ImageDropzone'
+import { TagsField } from '../TagsField'
+import styles from './CardForm.module.scss'
+
+const PRIORITY_OPTIONS = toOptions(PRIORITY_VALUES, PRIORITY_LABELS)
+const STATUS_OPTIONS = toOptions(STATUS_VALUES, STATUS_LABELS)
+const ASSIGNEE_OPTIONS = toOptions(ASSIGNEE_VALUES, ASSIGNEE_NAMES)
+
+interface CardFormProps {
+  defaultValues: CardFormValues
+
+  savedDeadline?: string
+  submitLabel: string
+  onSubmit: (data: CardFormOutput) => void
+
+  secondaryAction?: ReactNode
+
+  onCancel?: () => void
+}
+
+export function CardForm({
+  defaultValues,
+  savedDeadline,
+  submitLabel,
+  onSubmit,
+  onCancel,
+  secondaryAction,
+}: CardFormProps) {
+  const id = useId()
+  const [today] = useState(() => isoDateAgo({ days: 0 }))
+  const schema = useMemo(
+    () => createCardFormSchema({ today, savedDeadline }),
+    [today, savedDeadline],
+  )
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CardFormValues, unknown, CardFormOutput>({
+    resolver: zodResolver(schema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    defaultValues,
+  })
+
+  const tags = useController({ control, name: 'tags' })
+  const tagInput = useController({ control, name: 'tagInput' })
+  const [resetCount, setResetCount] = useState(0)
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel()
+      return
+    }
+    reset(defaultValues)
+    setResetCount((count) => count + 1)
+  }
+
+  const minDeadline = savedDeadline && savedDeadline < today ? savedDeadline : today
+
+  return (
+    <form
+      className={styles.form}
+      noValidate
+      onSubmit={(event) => void handleSubmit(onSubmit)(event)}
+    >
+      <div className={styles.card}>
+        <div className={styles.column}>
+          <TextField
+            label="Title"
+            placeholder="Enter card title"
+            required
+            error={errors.title?.message}
+            {...register('title')}
+          />
+          <TextArea
+            label="Description"
+            placeholder="Enter detailed description..."
+            required
+            error={errors.description?.message}
+            {...register('description')}
+          />
+          <Controller
+            control={control}
+            name="priority"
+            render={({ field }) => (
+              <Select
+                label="Priority"
+                placeholder="Select priority"
+                options={PRIORITY_OPTIONS}
+                required
+                error={errors.priority?.message}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="status"
+            render={({ field }) => (
+              <Select
+                label="Status"
+                placeholder="Select status"
+                options={STATUS_OPTIONS}
+                error={errors.status?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+
+        <div className={styles.column}>
+          <Controller
+            control={control}
+            name="assignee"
+            render={({ field }) => (
+              <Select
+                label="Assignee"
+                placeholder="Select assignee"
+                options={ASSIGNEE_OPTIONS}
+                error={errors.assignee?.message}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="deadline"
+            render={({ field }) => (
+              <DateField
+                label="Deadline"
+                placeholder="Select date"
+                min={minDeadline}
+                error={errors.deadline?.message}
+                {...field}
+              />
+            )}
+          />
+          <TagsField
+            key={`tags-${String(resetCount)}`}
+            id={`${id}-tags`}
+            label="Tags"
+            placeholder="Add tags..."
+            tags={tags.field.value}
+            onTagsChange={tags.field.onChange}
+            draft={tagInput.field.value}
+            onDraftChange={tagInput.field.onChange}
+            onBlur={tagInput.field.onBlur}
+            inputRef={(element) => {
+              tags.field.ref(element)
+              tagInput.field.ref(element)
+            }}
+            error={errors.tagInput?.message ?? errors.tags?.message}
+          />
+          <Controller
+            control={control}
+            name="images"
+            render={({ field }) => (
+              <ImageDropzone
+                key={`images-${String(resetCount)}`}
+                id={`${id}-images`}
+                images={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                buttonRef={field.ref}
+                error={errors.images?.message}
+              />
+            )}
+          />
+        </div>
+      </div>
+
+      <div className={styles.actions}>
+        {secondaryAction && <div className={styles.secondary}>{secondaryAction}</div>}
+        <Button variant="outline" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="submit">{submitLabel}</Button>
+      </div>
+    </form>
+  )
+}

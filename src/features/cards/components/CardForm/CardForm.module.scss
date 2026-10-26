@@ -1,0 +1,59 @@
+@use '@/shared/styles/tokens' as *;
+@use '@/shared/styles/mixins' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+  padding: 28px;
+  background-color: $color-surface;
+  border-radius: $radius-card;
+  box-shadow: $shadow-card;
+
+  @include below-lg {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  @include mobile {
+    padding: 20px;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  @include mobile {
+    flex-direction: column-reverse;
+
+    > *,
+    .secondary > * {
+      width: 100%;
+    }
+  }
+}
+
+.secondary {
+  display: flex;
+  margin-right: auto;
+
+  @include mobile {
+    margin-right: 0;
+  }
+}

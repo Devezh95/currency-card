@@ -1,0 +1,24 @@
+@use 'reset';
+@use 'tokens' as *;
+
+:root {
+  @include custom-properties;
+
+  font-family: $font-family;
+  font-weight: $fw-regular;
+  line-height: $line-height-base;
+  color: $color-primary;
+  background-color: $color-bg-main;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+@property --fixed-bottom-inset {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
