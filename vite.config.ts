@@ -4,9 +4,8 @@ import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
-export default defineConfig(({ command, isPreview }) => ({
-  base: command === 'build' || isPreview ? '/currency-cards-dashboard/' : '/',
+export default defineConfig(() => ({
+  base: '/',
   plugins: [react()],
 
   server: {
